@@ -1,0 +1,48 @@
+App features (App)
+------------------
+- On open: Shows user a map of current city with a (heat)map of most popular tags
+- On text entry: Shows user suggestions for top trending tags & probable completion options
+- On tag send: Contacts API and commits tag plus location to storage
+- On tag search: Contacts API and gets information about tags in current area, displays as heat map
+- On slider move: Switches between tag sending and tag searching, updates map display
+- On menu click: Gathers login credentials, contacts API and authenticates the user
+
+
+API features (Backend)
+----------------------
+- login: Receives authentication info, checks it, and gives out a valid token
+- auth: Receives token and returns, whether it is valid or not
+- logout: Receives token and de-authenticates user
+- store: Receives tag, lat, lon, owner, token and stores it to the database
+- query: Receives lat, lon, circumference, resolution, query and returns matching tags in area with requested resolution
+
+
+Website features (Frontend)
+---------------------------
+- Informational pages about the company and app
+- Showcase current tagging activity in a cool way
+- Browse/search for historical tags and display them (?)
+- Create account (possibility to link with FB/Twitter)
+- Manage account
+- Social sharing
+
+
+Database features (Database)
+----------------------------
+- Receives information from API and stores/queries it
+- Static authentication (API container contains password ?)
+
+
+Controller features (Controller) <- ??? Later step...
+--------------------------------
+- Manage docker containers
+- Spawns databases/API containers depending on load
+- Authenticates containers and requests between them (?)
+- Recommends good/performant container to query on request (load balancing)
+- Diagnoses/stops/removes failed containers
+- Keeps logs of all activities
+
+
+
+
+

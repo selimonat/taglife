@@ -1,0 +1,56 @@
+we'd need a web service that takes this JSON as request:
+
+{"tag": {
+  "lat": "50.983442",
+  "lon": "23.3898374",
+  "text": "#bad4bikes",
+  "owner": "8279358",
+  "token": "1ff38cc592c4c5d0c8e3ca38be8f1eb1"
+}}
+
+it should then store it to the database and return:
+
+{"result": {
+  "status": 0,
+  "message": "",
+  "token": "1ff38cc592c4c5d0c8e3ca38be8f1eb1"
+}}
+
+it should also take a JSON request like:
+
+{"request": {
+  "lat": "50.983442",
+  "lon": "23.3898374",
+  "return": {
+    "type": "rect_neighbours",
+    "width": "0.00023",
+    "height": "0.0000045"
+  },
+  "token": "1ff38cc592c4c5d0c8e3ca38be8f1eb1"
+}}
+
+and return a list of tags:
+
+{"reusutlist": {
+  "tag": {
+    "lat": "50.983442",
+    "lon": "23.3898374",
+    "text": "#bad4bikes",
+  },
+  "tag": {
+    "lat": "50.983532",
+    "lon": "23.3898631",
+    "text": "#sale",
+  },
+  "tag": {
+    "lat": "50.983223",
+    "lon": "23.3898721",
+    "text": "#govegan",
+  }
+}}
+
+as a response :) I think then we can already use the mobile app a bit to test. And we could then also write a program to put some locations into the database automatically, for example from some maps data, sports trackers, etc. And this:
+
+echo -n 'taglifeisthebest2019' 
+
+will give the db password. 

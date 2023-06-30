@@ -1,0 +1,94 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Taglife</title>
+  <meta name="description" content="Taglife main page">
+  <meta name="author" content="Selim Onat and Philipp Taesler">
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <link rel="stylesheet" href="css/local.styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v1.3.2/mapbox-gl.css">
+</head>
+
+<body>
+
+  <div id='panel' class="tagcenter">
+    <form id="tagsend" style="width: 210px; margin:auto;">
+      <input type="text" id='tagname' length="50" style="display:inline; width:160px; padding:0; margin:0; border:0; height:30px">
+      <button type="submit" style="display:inline; padding:0; margin:0; width:40px; height:32px;">TAG</button>
+    </form>
+  </div>
+
+  <div id='map'></div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.3.2/mapbox-gl.js'></script>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidGhyYXduc2tpIiwiYSI6ImNrMWM0a2tvbjJtM3ozY3B5dW8xc2UzMXMifQ.nkh3oZQKpa9dRg9LMEbzcg';
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/dark-v10',
+      center: {lat: 53.553086, lon: 9.994482}, //Hamburg coordinates
+      zoom: 14
+    });
+    map.addControl(new mapboxgl.FullscreenControl());
+    $('#tagsend').submit(function (evt) {
+      evt.preventDefault();
+      var tagfield =  $('#tagname');
+      if (tagfield.val()) {
+//        alert('tag "' + tagfield.val() + '" sent!');
+        getLocation();
+        //tagfield.val('');
+      }
+    });
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(reportPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+    function reportPosition(position) {
+      var lat = position.coords.latitude
+      var lon = position.coords.longitude
+      var pos = rndPos(lat, lon);
+      console.log('tag "' + $('#tagname').val() + '" sent from lat: '+  pos.lat +' lon: '+ pos.lon +'!');
+      map.flyTo({
+        center: {lat: pos.lat, lon: pos.lon},
+        zoom: 14,
+        speed: 1.2, // make the flying slow
+        curve: 0.9, // change the speed at which it zooms out
+      });
+      setTag($('#tagname').val(), pos.lat, pos.lon);
+    }
+    function setTag(content, lat, lon) {
+        // create a HTML element for each feature
+        var el = document.createElement('div');
+        el.className = 'marker';
+        el.innerHTML = content;
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el)
+            .setLngLat([lon, lat])
+            .addTo(map);
+    }
+    function rndPos(lat, lon) {
+        latoff = Math.random() * 0.05;
+        lonoff = Math.random() * 0.05;
+        return({
+            lat: lat + latoff,
+            lon: lon + lonoff
+        });
+    }
+      
+  </script>
+</body>
+</html>
